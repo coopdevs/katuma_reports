@@ -1,9 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.22'
-
-gem 'sqlite3'
-
+gem 'pg', '0.13.2'
 gem 'devise', '2.2.8'
 
 # Gems used only for assets and not required
