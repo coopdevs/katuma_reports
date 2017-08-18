@@ -19,11 +19,11 @@ module Spree
     end
 
     def destroy
-      raise ReadOnlyRecord
+      raise ActiveRecord::ReadOnlyRecord
     end
 
     def delete
-      raise ReadOnlyRecord
+      raise ActiveRecord::ReadOnlyRecord
     end
   end
 end
