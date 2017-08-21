@@ -1,1 +1,5 @@
 <h2>reports</h2>
+
+<form>
+  <%= select_tag 'order_cycles', options_from_collection_for_select(order_cycles, 'id', 'name') %>
+</form>

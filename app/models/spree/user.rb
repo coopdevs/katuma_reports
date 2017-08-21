@@ -9,6 +9,8 @@ module Spree
 
     attr_readonly(*column_names) # Required to block update_attribute and update_column
 
+    has_many :owned_enterprises, class_name: 'Enterprise', foreign_key: :owner_id, inverse_of: :owner
+
     def readonly?
       if Rails.env.test?
         false
