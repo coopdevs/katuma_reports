@@ -19,6 +19,8 @@ end
 gem 'jquery-rails'
 
 group :test do
+  gem 'factory_girl_rails', '3.3.0'
+  gem 'ffaker', '~> 1.22.0'
   gem 'rspec-rails', '~> 3.6'
 end
 
