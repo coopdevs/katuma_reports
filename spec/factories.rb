@@ -57,7 +57,7 @@ FactoryGirl.define do
     end
   end
 
-  factory :order_cycle, :parent => :simple_order_cycle do
+  factory :order_cycle, parent: :simple_order_cycle do
     coordinator_fees { [create(:enterprise_fee, enterprise: coordinator)] }
 
     after(:create) do |oc|
@@ -123,5 +123,17 @@ FactoryGirl.define do
 
   factory :calculator_per_item, class: Spree::Calculator::PerItem do
     preferred_amount { generate(:calculator_amount) }
+  end
+
+  factory :supplier_enterprise, parent: :enterprise do
+    is_primary_producer true
+    sells "none"
+  end
+
+  factory :exchange, class: Exchange do
+    incoming    false
+    order_cycle { OrderCycle.first || FactoryGirl.create(:simple_order_cycle) }
+    sender      { incoming ? FactoryGirl.create(:enterprise) : order_cycle.coordinator }
+    receiver    { incoming ? order_cycle.coordinator : FactoryGirl.create(:enterprise) }
   end
 end
