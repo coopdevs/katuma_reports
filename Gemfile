@@ -21,3 +21,7 @@ gem 'jquery-rails'
 group :test do
   gem 'rspec-rails', '~> 3.6'
 end
+
+group :development, :test do
+  gem 'byebug', '~> 9.0'
+end
