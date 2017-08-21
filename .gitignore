@@ -13,3 +13,5 @@
 
 vendor/
 tags
+
+.envrc
