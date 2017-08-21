@@ -6,6 +6,7 @@ gem 'devise', '2.2.8'
 gem 'devise-encryptable', '0.1.2'
 gem 'pg', '0.13.2'
 gem 'rails', '3.2.22'
+gem 'spree', github: 'openfoodfoundation/spree', branch: 'spree-upgrade-step1c'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -20,7 +21,7 @@ gem 'jquery-rails'
 
 group :test do
   gem 'factory_girl_rails', '3.3.0'
-  gem 'ffaker', '~> 1.22.0'
+  gem 'ffaker', '~> 1.15'
   gem 'rspec-rails', '~> 3.6'
 end
 

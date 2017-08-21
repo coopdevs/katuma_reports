@@ -1,21 +1,7 @@
+require 'ffaker'
+require 'spree/core/testing_support/factories'
+
 FactoryGirl.define do
-  sequence(:random_email)       { Faker::Internet.email }
-  sequence :user_authentication_token do |n|
-    "xxxx#{Time.now.to_i}#{rand(1000)}#{n}xxxxxxxxxxxxx"
-  end
-
-  factory :user, class: Spree.user_class do
-    email { generate(:random_email) }
-    login { email }
-    password 'secret'
-    password_confirmation { password }
-    authentication_token { generate(:user_authentication_token) } if Spree.user_class.attribute_method? :authentication_token
-
-    factory :admin_user do
-      spree_roles { [Spree::Role.find_by_name('admin') || create(:role, name: 'admin')] }
-    end
-  end
-
   factory :enterprise, class: Enterprise do
     owner { FactoryGirl.create :user }
     sequence(:name) { |n| "Enterprise #{n}" }
@@ -25,28 +11,7 @@ FactoryGirl.define do
     email 'enterprise@example.com'
     address { FactoryGirl.create(:address) }
     confirmed_at { Time.zone.now }
-    permalink 'zzz'
-  end
-
-  factory :address, aliases: [:bill_address, :ship_address], class: Spree::Address do
-    firstname 'John'
-    lastname 'Doe'
-    company 'Company'
-    address1 '10 Lovely Street'
-    address2 'Northwest'
-    city 'Herndon'
-    zipcode '20170'
-    phone '123-456-7890'
-    alternative_phone '123-456-7899'
-
-    state { |address| address.association(:state) }
-    country do |address|
-      if address.state
-        address.state.country
-      else
-        address.association(:country)
-      end
-    end
+    sequence(:permalink) { |n| "permalink#{n}" }
   end
 
   factory :distributor_enterprise, :parent => :enterprise do
@@ -144,27 +109,7 @@ FactoryGirl.define do
     end
   end
 
-  factory :state, class: Spree::State do
-    name 'Alabama'
-    abbr 'AL'
-    country do |country|
-      if usa = Spree::Country.find_by_numcode(840)
-        country = usa
-      else
-        country.association(:country)
-      end
-    end
-  end
-
-  factory :country, class: Spree::Country do
-    iso_name 'UNITED STATES'
-    name 'United States of America'
-    iso 'US'
-    iso3 'USA'
-    numcode 840
-  end
-
-  factory :enterprise_fee, :class => EnterpriseFee do
+  factory :enterprise_fee, class: EnterpriseFee do
     ignore { amount nil }
 
     sequence(:name) { |n| "Enterprise fee #{n}" }
