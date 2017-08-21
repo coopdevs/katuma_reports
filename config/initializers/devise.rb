@@ -141,4 +141,9 @@ Devise.setup do |config|
   config.sign_out_via = :get
 
   config.case_insensitive_keys = [:email]
+
+  config.warden do |manager|
+    require 'redirect_to_ofn_failure'
+    manager.failure_app = RedirectToOFNFailure
+  end
 end
