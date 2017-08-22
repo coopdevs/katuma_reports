@@ -12,6 +12,7 @@ describe ReportsController do
 
     context 'when the user is authenticated' do
       let(:user) { create(:user) }
+      let(:enterprise) { create(:enterprise) }
 
       before { sign_in(user) }
 
@@ -20,34 +21,38 @@ describe ReportsController do
       end
 
       context 'when the user belongs to a particular enterprise' do
-        let(:enterprise) { create(:enterprise) }
-        let!(:order_cycle) { create(:order_cycle, coordinator: enterprise) }
+        let!(:weekly_order_cycle) do
+          create(:order_cycle, coordinator: enterprise, created_at: 2.days.ago)
+        end
+        let!(:monthly_order_cycle) do
+          create(:order_cycle, coordinator: enterprise)
+        end
 
-        before { create(:enterprise_role, user: user, enterprise: enterprise) }
+        before do
+          create(:enterprise_role, user: user, enterprise: enterprise)
+          stub_const('ReportsController::SHOWED_ORDER_CYCLES', 1)
+        end
 
-        it 'shows their order cycles' do
+        it 'shows its SHOWED_ORDER_CYCLES latest order cycles' do
           get :index
           expect(response.body).to include(
-            "<option value=\"#{order_cycle.id}\">#{order_cycle.name}</option>"
+            "<option value=\"#{monthly_order_cycle.id}\">#{monthly_order_cycle.name}</option>"
+          )
+          expect(response.body).not_to include(
+            "<option value=\"#{weekly_order_cycle.id}\">#{weekly_order_cycle.name}</option>"
           )
         end
       end
 
       context 'when the user does not belong to a particular enterprise' do
-        let(:other_user) { create(:user) }
-        let(:other_enterprise) { create(:enterprise) }
-        let!(:other_order_cycle) do
-          create(:order_cycle, coordinator: other_enterprise)
+        let!(:monthly_order_cycle) do
+          create(:order_cycle, coordinator: enterprise)
         end
 
-        before do
-          create(:enterprise_role, user: other_user, enterprise: other_enterprise)
-        end
-
-        it 'does not show their order cycles' do
+        it 'does not show its order cycles' do
           get :index
           expect(response.body).not_to include(
-            "<option value=\"#{other_order_cycle.id}\">#{other_order_cycle.name}</option>"
+            "<option value=\"#{monthly_order_cycle.id}\">#{monthly_order_cycle.name}</option>"
           )
         end
       end
