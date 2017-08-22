@@ -12,7 +12,7 @@ describe ReportsController do
 
     context 'when the user is authenticated' do
       let(:user) { create(:user) }
-      let(:order_cycle) { create(:order_cycle) }
+      let!(:order_cycle) { create(:order_cycle) }
 
       before { sign_in(user) }
 
