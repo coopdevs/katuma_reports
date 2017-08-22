@@ -139,4 +139,7 @@ FactoryGirl.define do
       primary_taxon { Spree::Taxon.first || FactoryGirl.create(:taxon) }
     end
   end
+
+  factory :enterprise_role do
+  end
 end
