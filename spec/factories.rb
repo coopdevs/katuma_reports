@@ -72,8 +72,9 @@ FactoryGirl.define do
       ex2 = create(:exchange, :order_cycle => oc, :incoming => true,
                    :sender => supplier2, :receiver => oc.coordinator,
                    :receival_instructions => 'instructions 1')
-      ExchangeFee.create!(exchange: ex1,
-                          enterprise_fee: create(:enterprise_fee, enterprise: ex1.sender))
+
+      enterprise_fee = create(:enterprise_fee, enterprise: ex1.sender)
+      ExchangeFee.create!(exchange: ex1, enterprise_fee: enterprise_fee)
       ExchangeFee.create!(exchange: ex2,
                           enterprise_fee: create(:enterprise_fee, enterprise: ex2.sender))
 
@@ -93,12 +94,8 @@ FactoryGirl.define do
       ExchangeFee.create!(exchange: ex4,
                           enterprise_fee: create(:enterprise_fee, enterprise: ex4.receiver))
 
-      # Products with images
       [ex1, ex2].each do |exchange|
         product = create(:product, supplier: exchange.sender)
-        image = File.open(File.expand_path('../../app/assets/images/logo-white.png', __FILE__))
-        Spree::Image.create({:viewable_id => product.master.id, :viewable_type => 'Spree::Variant', :alt => "position 1", :attachment => image, :position => 1})
-
         exchange.variants << product.variants.first
       end
 
@@ -135,5 +132,11 @@ FactoryGirl.define do
     order_cycle { OrderCycle.first || FactoryGirl.create(:simple_order_cycle) }
     sender      { incoming ? FactoryGirl.create(:enterprise) : order_cycle.coordinator }
     receiver    { incoming ? order_cycle.coordinator : FactoryGirl.create(:enterprise) }
+  end
+
+  FactoryGirl.modify do
+    factory :product do
+      primary_taxon { Spree::Taxon.first || FactoryGirl.create(:taxon) }
+    end
   end
 end
