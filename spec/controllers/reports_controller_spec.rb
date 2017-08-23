@@ -60,6 +60,8 @@ describe ReportsController do
   end
 
   describe '#show' do
+    # TODO: Missing authorization. Only a user that belongs to the enterprise
+    # can see its reports.
     let(:user) { create(:user) }
     let(:customer) { create(:customer) }
     let(:other_customer) { create(:customer) }
