@@ -58,4 +58,47 @@ describe ReportsController do
       end
     end
   end
+
+  describe '#show' do
+    let(:user) { create(:user) }
+    let(:other_user) { create(:user) }
+    let(:user_from_other_enterprise) { create(:user) }
+
+    let(:enterprise) { create(:enterprise) }
+    let!(:order_cycle) { create(:order_cycle, coordinator: enterprise) }
+
+    let(:other_enterprise) { create(:enterprise) }
+
+    before do
+      create(:enterprise_role, user: user, enterprise: enterprise)
+      create(:enterprise_role, user: other_user, enterprise: enterprise)
+
+      create(
+        :enterprise_role,
+        user: user_from_other_enterprise,
+        enterprise: other_enterprise
+      )
+
+      sign_in(user)
+    end
+
+    it 'renders the :show template' do
+      expect(get :show, id: order_cycle.id).to render_template(:show)
+    end
+
+    it 'shows a column per enterprise role in the order cycle' do
+      get :show, id: order_cycle.id
+
+      expect(response.body).to include("<td>#{user.login}</td>")
+      expect(response.body).to include("<td>#{other_user.login}</td>")
+    end
+
+    it 'does not show enterprise roles for other order cycles' do
+      get :show, id: order_cycle.id
+
+      expect(response.body).not_to include(
+        "<td>#{user_from_other_enterprise.login}</td>"
+      )
+    end
+  end
 end

@@ -1,0 +1,10 @@
+<table>
+  <thead>
+    <tr>
+      <th>Product</th>
+      <% users.each do |user| %>
+        <th><%= user.login %></th>
+      <% end %>
+    </tr>
+  </thead>
+</table>

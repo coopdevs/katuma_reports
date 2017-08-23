@@ -12,4 +12,18 @@ class ReportsController < ActionController::Base
 
     render :index, locals: { order_cycles: order_cycles }
   end
+
+  def show
+    users = Spree::User
+      .joins(enterprises: :coordinators)
+      .where('order_cycles.id = ?', order_cycle_id)
+
+    render :show, locals: { users: users }
+  end
+
+  private
+
+  def order_cycle_id
+    params[:id]
+  end
 end
