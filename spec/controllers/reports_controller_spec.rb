@@ -95,9 +95,11 @@ describe ReportsController do
     end
 
     let(:variant) { create(:variant) }
+    let(:other_variant) { create(:variant) }
 
     before do
-      create(:line_item, order: order, variant: variant)
+      create(:line_item, order: order, variant: variant, quantity: 4)
+      create(:line_item, order: order, variant: other_variant, quantity: 2)
     end
 
     it 'renders the :show template' do
@@ -130,7 +132,19 @@ describe ReportsController do
     it 'shows a row per variant in the orders of the order cycle' do
       get :show, id: order_cycle.id
 
-      expect(response.body).to include("<td>#{variant.product.name}</td>")
+      expect(response.body).to include(<<-HTML)
+    <tr>
+      <td>#{variant.product.name} - Variant: #{variant.id}</td>
+      <td>4</td>
+    </tr>
+      HTML
+
+      expect(response.body).to include(<<-HTML)
+    <tr>
+      <td>#{other_variant.product.name} - Variant: #{other_variant.id}</td>
+      <td>2</td>
+    </tr>
+      HTML
     end
   end
 end

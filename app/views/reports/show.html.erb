@@ -8,8 +8,15 @@
     </tr>
   </thead>
   <tbody>
-  <% products.each do |product| %>
-    <td><%= product.name %></td>
+
+  <% variants_with_line_items.each do |(variant, line_items)| %>
+    <tr>
+      <td><%= products[variant.to_s].first.name %> - Variant: <%= variant %></td>
+    <% line_items.each do |line_item| %>
+      <td><%= line_item.quantity %></td>
+    <% end %>
+    </tr>
   <% end %>
+
   </tbody>
 </table>
