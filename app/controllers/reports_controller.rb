@@ -19,7 +19,10 @@ class ReportsController < ActionController::Base
     # chance
     customers = Customer
       .joins(orders: :order_cycle)
+      .uniq
       .where(order_cycles: { id: order_cycle.id })
+      .order(:name)
+      .pluck(:name)
 
     products = Spree::Product
       .joins(variants: { line_items: { order: :order_cycle } })
