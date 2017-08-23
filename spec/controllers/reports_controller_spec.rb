@@ -63,49 +63,73 @@ describe ReportsController do
     # TODO: Missing authorization. Only a user that belongs to the enterprise
     # can see its reports.
     let(:user) { create(:user) }
-    let(:customer) { create(:customer) }
-    let(:other_customer) { create(:customer) }
-
-    let(:user_from_other_enterprise) { create(:user) }
 
     let(:enterprise) { create(:enterprise) }
     let(:order_cycle) { create(:order_cycle, coordinator: enterprise) }
+
+    let(:customer) { create(:customer) }
     let!(:order) do
       create(:order, customer: customer, order_cycle: order_cycle, state: 'complete')
     end
+
+    let(:other_customer) { create(:customer) }
     let!(:other_order) do
       create(:order, customer: other_customer, order_cycle: order_cycle, state: 'complete')
     end
 
-    let(:other_enterprise) { create(:enterprise) }
-
-    before do
-      create(
-        :enterprise_role,
-        user: user_from_other_enterprise,
-        enterprise: other_enterprise
-      )
-
-      sign_in(user)
+    let(:previous_order_cycle) { create(:order_cycle, coordinator: enterprise) }
+    let!(:order_from_previous_order_cycle) do
+      create(:order, customer: customer, order_cycle: previous_order_cycle, state: 'complete')
     end
+
+    let(:customer_from_other_enterprise) { create(:customer) }
+    let(:other_enterprise) { create(:enterprise) }
+    let(:order_cycle_from_other_enterprise) { create(:order_cycle, coordinator: other_enterprise) }
+    let!(:order_from_other_enterprise) do
+      create(
+        :order,
+        customer: customer_from_other_enterprise,
+        order_cycle: order_cycle_from_other_enterprise,
+        state: 'complete'
+      )
+    end
+
+    before { sign_in(user) }
 
     it 'renders the :show template' do
       expect(get :show, id: order_cycle.id).to render_template(:show)
     end
 
-    it 'shows a column per order in the order cycle' do
+    it 'shows a column per customer in the order cycle' do
       get :show, id: order_cycle.id
 
       expect(response.body).to include("<th>#{order.customer.name}</th>")
       expect(response.body).to include("<th>#{other_order.customer.name}</th>")
     end
 
-    it 'does not show enterprise roles for other order cycles' do
+    it 'does not show any column for customers of order cycles of other enterprises' do
       get :show, id: order_cycle.id
 
       expect(response.body).not_to include(
-        "<td>#{user_from_other_enterprise.login}</td>"
+        "<td>#{order_from_other_enterprise.customer.name}</td>"
       )
+    end
+
+    it 'does not show any column for customers of other order cycles of the same enterprise' do
+      get :show, id: order_cycle.id
+
+      expect(response.body).not_to include(
+        "<td>#{order_from_previous_order_cycle.customer.name}</td>"
+      )
+    end
+
+    xit 'shows a row per variant in the order cycle' do
+      get :show, id: order_cycle.id
+
+      exchange = order_cycle.exchanges.where(incoming: false).first
+      variant = exchange.variants.first
+
+      expect(response.body).to include("<td>#{variant.product.name}</td>")
     end
   end
 end
