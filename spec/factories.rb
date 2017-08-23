@@ -142,4 +142,12 @@ FactoryGirl.define do
 
   factory :enterprise_role do
   end
+
+  factory :customer, class: Customer do
+    email { Faker::Internet.email }
+    enterprise
+    code { SecureRandom.base64(150) }
+    user
+    bill_address { create(:address) }
+  end
 end

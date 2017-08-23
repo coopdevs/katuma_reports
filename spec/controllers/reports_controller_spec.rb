@@ -61,18 +61,23 @@ describe ReportsController do
 
   describe '#show' do
     let(:user) { create(:user) }
-    let(:other_user) { create(:user) }
+    let(:customer) { create(:customer) }
+    let(:other_customer) { create(:customer) }
+
     let(:user_from_other_enterprise) { create(:user) }
 
     let(:enterprise) { create(:enterprise) }
-    let!(:order_cycle) { create(:order_cycle, coordinator: enterprise) }
+    let(:order_cycle) { create(:order_cycle, coordinator: enterprise) }
+    let!(:order) do
+      create(:order, customer: customer, order_cycle: order_cycle, state: 'complete')
+    end
+    let!(:other_order) do
+      create(:order, customer: other_customer, order_cycle: order_cycle, state: 'complete')
+    end
 
     let(:other_enterprise) { create(:enterprise) }
 
     before do
-      create(:enterprise_role, user: user, enterprise: enterprise)
-      create(:enterprise_role, user: other_user, enterprise: enterprise)
-
       create(
         :enterprise_role,
         user: user_from_other_enterprise,
@@ -86,11 +91,11 @@ describe ReportsController do
       expect(get :show, id: order_cycle.id).to render_template(:show)
     end
 
-    it 'shows a column per enterprise role in the order cycle' do
+    it 'shows a column per order in the order cycle' do
       get :show, id: order_cycle.id
 
-      expect(response.body).to include("<td>#{user.login}</td>")
-      expect(response.body).to include("<td>#{other_user.login}</td>")
+      expect(response.body).to include("<th>#{order.customer.name}</th>")
+      expect(response.body).to include("<th>#{other_order.customer.name}</th>")
     end
 
     it 'does not show enterprise roles for other order cycles' do

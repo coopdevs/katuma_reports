@@ -14,16 +14,19 @@ class ReportsController < ActionController::Base
   end
 
   def show
-    users = Spree::User
-      .joins(enterprises: :coordinators)
-      .where('order_cycles.id = ?', order_cycle_id)
+    customers = Customer
+      .joins(orders: :order_cycle)
+      .where(order_cycles: { id: order_cycle.id })
 
-    render :show, locals: { users: users }
+    # exchange = order_cycle.exchanges.where(incoming: false).first
+    # variant = exchange.variants.first
+
+    render :show, locals: { customers: customers }
   end
 
   private
 
-  def order_cycle_id
-    params[:id]
+  def order_cycle
+    OrderCycle.find(params[:id])
   end
 end
