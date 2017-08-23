@@ -7,4 +7,9 @@
     <% end %>
     </tr>
   </thead>
+  <tbody>
+  <% products.each do |product| %>
+    <td><%= product.name %></td>
+  <% end %>
+  </tbody>
 </table>

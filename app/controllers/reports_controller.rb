@@ -18,10 +18,11 @@ class ReportsController < ActionController::Base
       .joins(orders: :order_cycle)
       .where(order_cycles: { id: order_cycle.id })
 
-    # exchange = order_cycle.exchanges.where(incoming: false).first
-    # variant = exchange.variants.first
+    products = Spree::Product
+      .joins(variants: { line_items: { order: :order_cycle } })
+      .where(order_cycles: { id: order_cycle.id })
 
-    render :show, locals: { customers: customers }
+    render :show, locals: { customers: customers, products: products }
   end
 
   private

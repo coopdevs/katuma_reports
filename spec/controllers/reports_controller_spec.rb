@@ -3,6 +3,8 @@ require 'rails_helper'
 describe ReportsController do
   render_views
 
+  before { sign_in(user) }
+
   describe '#index' do
     context 'when the user is not authenticated' do
       it 'redirects to the main OFN app' do
@@ -13,8 +15,6 @@ describe ReportsController do
     context 'when the user is authenticated' do
       let(:user) { create(:user) }
       let(:enterprise) { create(:enterprise) }
-
-      before { sign_in(user) }
 
       it 'renders the :index template' do
         expect(get(:index)).to render_template(:index)
@@ -68,7 +68,7 @@ describe ReportsController do
     let(:order_cycle) { create(:order_cycle, coordinator: enterprise) }
 
     let(:customer) { create(:customer) }
-    let!(:order) do
+    let(:order) do
       create(:order, customer: customer, order_cycle: order_cycle, state: 'complete')
     end
 
@@ -94,7 +94,11 @@ describe ReportsController do
       )
     end
 
-    before { sign_in(user) }
+    let(:variant) { create(:variant) }
+
+    before do
+      create(:line_item, order: order, variant: variant)
+    end
 
     it 'renders the :show template' do
       expect(get :show, id: order_cycle.id).to render_template(:show)
@@ -123,11 +127,8 @@ describe ReportsController do
       )
     end
 
-    xit 'shows a row per variant in the order cycle' do
+    it 'shows a row per variant in the orders of the order cycle' do
       get :show, id: order_cycle.id
-
-      exchange = order_cycle.exchanges.where(incoming: false).first
-      variant = exchange.variants.first
 
       expect(response.body).to include("<td>#{variant.product.name}</td>")
     end
