@@ -17,13 +17,15 @@ class ReportsController < ActionController::Base
     # TODO: Make customer name header match the correct quantity. Now the
     # quantity showed in the cell is the one belonging to the customer by pure
     # chance
+    #
+    # In Rails 3.2 (that I know of) when using #includes #select has no effect...
+    # See: https://stackoverflow.com/questions/4047833/rails-3-select-with-include
     orders = Spree::Order
       .joins(:order_cycle)
       .includes(:customer)
       .uniq
       .where(order_cycles: { id: order_cycle.id })
       .order('customers.name ASC')
-      .select('spree_orders.number')
 
     products = Spree::Product
       .joins(variants: { line_items: { order: :order_cycle } })
