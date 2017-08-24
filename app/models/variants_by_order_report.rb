@@ -12,10 +12,10 @@ class VariantsByOrderReport
   # See: https://stackoverflow.com/questions/4047833/rails-3-select-with-include
   #
   # Returns the orders for the given order cycle ordered by their associated
-  # customer's name
+  # customer's name. It is meant to be used in the table header.
   #
   # @return [ActiveRecord::Relation]
-  def orders
+  def orders_including_customer
     Spree::Order
       .joins(:order_cycle)
       .includes(:customer)
@@ -27,7 +27,7 @@ class VariantsByOrderReport
 
   # Returns a hash where the key is a variant id present in at least one of the
   # orders of the order cycle and the value is an array with the product that
-  # variant belongs to.
+  # variant belongs to. It is meant to be used in the table's left-most column.
   #
   # See #products for details
   #
@@ -36,7 +36,8 @@ class VariantsByOrderReport
     products.group_by { |product| product.variant_id.to_i }
   end
 
-  # Returns the appropriate line item for the given variant and order ids
+  # Returns the appropriate line item for the given variant and order ids. It
+  # is meant to be used in the table cells.
   #
   # @param variant_id [Integer]
   # @param order_id [Integer]

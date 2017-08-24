@@ -4,7 +4,7 @@ class VariantsByOrderController < ActionController::Base
 
   def index
     render :index, locals: {
-      orders: variants_by_order_report.orders,
+      orders_including_customer: variants_by_order_report.orders_including_customer,
       products_by_variant_id: variants_by_order_report.products_by_variant_id,
       variants_by_order_report: variants_by_order_report
     }
