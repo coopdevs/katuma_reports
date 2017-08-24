@@ -21,7 +21,7 @@ class ReportsController < ActionController::Base
     render :show, locals: {
       orders: variants_by_order_report.orders,
       products_by_variant_id: variants_by_order_report.products_by_variant_id,
-      line_items_by_variant_id: variants_by_order_report.line_items_by_variant_id
+      variants_by_order_report: variants_by_order_report
     }
   end
 

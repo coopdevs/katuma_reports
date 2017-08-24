@@ -35,15 +35,15 @@ class VariantsByOrderReport
     products.group_by { |product| product.variant_id.to_i }
   end
 
-  # Returns a hash where the key is a variant id present in at least one of the
-  # orders of the order cycle and the value is an array of the line items that
-  # have that variant.
+  # Returns the appropriate line item for the given variant and order ids
   #
-  # See #line_items for details
-  #
-  # @return [Hash<Integer, Array<Spree:LineItem>>]
-  def line_items_by_variant_id
-    line_items.group_by(&:variant_id)
+  # @param variant_id [Integer]
+  # @param order_id [Integer]
+  def line_item_for(variant_id, order_id)
+    line_item = line_items_by_variant_id[variant_id]
+      .find { |line_item| line_item.order_id == order_id }
+
+    line_item.try(:quantity) || 0
   end
 
   private
@@ -64,6 +64,17 @@ class VariantsByOrderReport
       .uniq
       .where(order_cycles: { id: order_cycle.id })
       .select('spree_products.name, spree_variants.id AS variant_id')
+  end
+
+  # Returns a hash where the key is a variant id present in at least one of the
+  # orders of the order cycle and the value is an array of the line items that
+  # have that variant.
+  #
+  # See #line_items for details
+  #
+  # @return [Hash<Integer, Array<Spree:LineItem>>]
+  def line_items_by_variant_id
+    line_items.group_by(&:variant_id)
   end
 
   # Gets the line items that belong to an order of the specified order cycle
