@@ -9,9 +9,9 @@
   </thead>
   <tbody>
 
-  <% variants_with_line_items.each do |(variant, line_items)| %>
+  <% line_items_by_variant_id.each do |(variant_id, line_items)| %>
     <tr>
-      <td><%= products[variant.to_s].first.name %> - Variant: <%= variant %></td>
+      <td><%= products_by_variant_id[variant_id.to_s].first.name %> - Variant: <%= variant_id %></td>
     <% line_items.each do |line_item| %>
       <td><%= line_item.quantity %></td>
     <% end %>

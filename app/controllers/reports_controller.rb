@@ -29,19 +29,20 @@ class ReportsController < ActionController::Base
       .uniq
       .where(order_cycles: { id: order_cycle.id })
       .select('spree_products.name, spree_variants.id AS variant_id')
-      .group_by(&:variant_id)
+
+    products_by_variant_id = products.group_by(&:variant_id)
 
     line_items = Spree::LineItem
       .joins(order: [:order_cycle, :customer])
       .group('customers.name, spree_line_items.variant_id, spree_line_items.quantity')
       .select([:variant_id, :quantity])
 
-    variants_with_line_items = line_items.group_by(&:variant_id)
+    line_items_by_variant_id = line_items.group_by(&:variant_id)
 
     render :show, locals: {
       customers: customers,
-      products: products,
-      variants_with_line_items: variants_with_line_items
+      products_by_variant_id: products_by_variant_id,
+      line_items_by_variant_id: line_items_by_variant_id
     }
   end
 
