@@ -69,7 +69,7 @@ describe ReportsController do
     let(:enterprise) { create(:enterprise) }
     let(:order_cycle) { create(:order_cycle, coordinator: enterprise) }
 
-    let(:customer) { create(:customer) }
+    let(:customer) { create(:customer, name: 'Customer Name') }
     let(:order) do
       create(:order, customer: customer, order_cycle: order_cycle, state: 'complete')
     end
@@ -111,8 +111,12 @@ describe ReportsController do
     it 'shows a column per customer in the order cycle' do
       get :show, id: order_cycle.id
 
-      expect(response.body).to include("<th>#{order.customer.name}</th>")
-      expect(response.body).to include("<th>#{other_order.customer.name}</th>")
+      expect(response.body).to include(
+        "<th>#{order.customer.name} - #{order.number}</th>"
+      )
+      expect(response.body).to include(
+        "<th>Guest - #{other_order.number}</th>"
+      )
     end
 
     it 'does not show any column for customers of order cycles of other enterprises' do

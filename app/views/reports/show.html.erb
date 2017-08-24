@@ -2,8 +2,8 @@
   <thead>
     <tr>
       <th>Product</th>
-    <% customers.each do |customer_name| %>
-      <th><%= customer_name %></th>
+    <% orders.each do |order| %>
+      <th><%= order.customer.try(:name) || 'Guest' %> - <%= order.number %></th>
     <% end %>
     </tr>
   </thead>

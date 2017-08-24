@@ -17,12 +17,13 @@ class ReportsController < ActionController::Base
     # TODO: Make customer name header match the correct quantity. Now the
     # quantity showed in the cell is the one belonging to the customer by pure
     # chance
-    customers = Customer
-      .joins(orders: :order_cycle)
+    orders = Spree::Order
+      .joins(:order_cycle)
+      .includes(:customer)
       .uniq
       .where(order_cycles: { id: order_cycle.id })
-      .order(:name)
-      .pluck(:name)
+      .order('customers.name ASC')
+      .select('spree_orders.number')
 
     products = Spree::Product
       .joins(variants: { line_items: { order: :order_cycle } })
@@ -34,13 +35,13 @@ class ReportsController < ActionController::Base
 
     line_items = Spree::LineItem
       .joins(order: [:order_cycle, :customer])
-      .group('customers.name, spree_line_items.variant_id, spree_line_items.quantity')
-      .select([:variant_id, :quantity])
+      .group('customers.id, spree_line_items.variant_id, spree_line_items.order_id, spree_line_items.quantity')
+      .select([:variant_id, :order_id, :quantity])
 
     line_items_by_variant_id = line_items.group_by(&:variant_id)
 
     render :show, locals: {
-      customers: customers,
+      orders: orders,
       products_by_variant_id: products_by_variant_id,
       line_items_by_variant_id: line_items_by_variant_id
     }
