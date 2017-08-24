@@ -16,10 +16,6 @@ class ReportsController < ActionController::Base
   end
 
   def show
-    # TODO: Make customer name header match the correct quantity. Now the
-    # quantity showed in the cell is the one belonging to the customer by pure
-    # chance
-    #
     # In Rails 3.2 (that I know of) when using #includes #select has no effect...
     # See: https://stackoverflow.com/questions/4047833/rails-3-select-with-include
     orders = Spree::Order
