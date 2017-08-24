@@ -7,6 +7,8 @@ describe ReportsController do
 
   describe '#index' do
     context 'when the user is not authenticated' do
+      let(:user) { Spree::User.new }
+
       it 'redirects to the main OFN app' do
         expect(get(:index)).to redirect_to('http://localhost:3000/login')
       end
