@@ -19,9 +19,9 @@ class VariantsByOrderReport
     Spree::Order
       .joins(:order_cycle)
       .includes(:customer)
+      .for_order_cycle(order_cycle)
+      .completed
       .uniq
-      .where(order_cycles: { id: order_cycle.id })
-      .where(state: 'complete')
       .order('customers.name ASC')
   end
 
@@ -63,8 +63,8 @@ class VariantsByOrderReport
   def products
     Spree::Product
       .joins(variants: { line_items: { order: :order_cycle } })
+      .for_order_cycle(order_cycle)
       .uniq
-      .where(order_cycles: { id: order_cycle.id })
       .select('spree_products.name, spree_variants.id AS variant_id')
   end
 
@@ -87,13 +87,13 @@ class VariantsByOrderReport
   def line_items
     Spree::LineItem
       .joins(order: [:order_cycle, :customer])
+      .for_order_cycle(order_cycle)
       .group(
         'customers.id, ' \
         'spree_line_items.variant_id, ' \
         'spree_line_items.order_id, ' \
         'spree_line_items.quantity'
       )
-      .where(order_cycles: { id: order_cycle.id })
       .select([:variant_id, :order_id, :quantity])
   end
 end

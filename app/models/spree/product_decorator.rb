@@ -4,6 +4,8 @@ Spree::Product.class_eval do
 
   after_save :ensure_standard_variant
 
+  scope :for_order_cycle, ->(order_cycle) { where(order_cycles: { id: order_cycle.id }) }
+
   private
 
   def ensure_standard_variant
