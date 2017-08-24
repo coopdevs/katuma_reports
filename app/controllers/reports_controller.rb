@@ -16,36 +16,12 @@ class ReportsController < ActionController::Base
   end
 
   def show
-    # In Rails 3.2 (that I know of) when using #includes #select has no effect...
-    # See: https://stackoverflow.com/questions/4047833/rails-3-select-with-include
-    orders = Spree::Order
-      .joins(:order_cycle)
-      .includes(:customer)
-      .uniq
-      .where(order_cycles: { id: order_cycle.id })
-      .order('customers.name ASC')
-
-    products = Spree::Product
-      .joins(variants: { line_items: { order: :order_cycle } })
-      .uniq
-      .where(order_cycles: { id: order_cycle.id })
-      .select('spree_products.name, spree_variants.id AS variant_id')
-
-    products_by_variant_id = products.group_by do |product|
-      product.variant_id.to_i
-    end
-
-    line_items = Spree::LineItem
-      .joins(order: [:order_cycle, :customer])
-      .group('customers.id, spree_line_items.variant_id, spree_line_items.order_id, spree_line_items.quantity')
-      .select([:variant_id, :order_id, :quantity])
-
-    line_items_by_variant_id = line_items.group_by(&:variant_id)
+    variants_by_order_report = VariantsByOrderReport.new(order_cycle)
 
     render :show, locals: {
-      orders: orders,
-      products_by_variant_id: products_by_variant_id,
-      line_items_by_variant_id: line_items_by_variant_id
+      orders: variants_by_order_report.orders,
+      products_by_variant_id: variants_by_order_report.products_by_variant_id,
+      line_items_by_variant_id: variants_by_order_report.line_items_by_variant_id
     }
   end
 
