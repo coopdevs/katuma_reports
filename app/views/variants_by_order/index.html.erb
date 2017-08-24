@@ -1,0 +1,22 @@
+<table>
+  <thead>
+    <tr>
+      <th>Product</th>
+    <% orders.each do |order| %>
+      <th><%= order.customer.name %> - <%= order.number %></th>
+    <% end %>
+    </tr>
+  </thead>
+  <tbody>
+
+  <% products_by_variant_id.each do |(variant_id, product)| %>
+    <tr>
+      <td><%= product.first.name %> - Variant: <%= variant_id %></td>
+    <% orders.each do |order| %>
+      <td><%= variants_by_order_report.line_item_for(variant_id, order.id) %></td>
+    <% end %>
+    </tr>
+  <% end %>
+
+  </tbody>
+</table>

@@ -3,5 +3,9 @@ KatumaReports::Application.routes.draw do
 
   root to: 'reports#index'
 
-  resources :reports, only: %i[index show]
+  resources :reports, only: %i[index]
+
+  scope '/reports' do
+    resources :variants_by_order, only: %i[index]
+  end
 end

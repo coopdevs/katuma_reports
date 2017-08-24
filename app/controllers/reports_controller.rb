@@ -14,20 +14,4 @@ class ReportsController < ActionController::Base
 
     render :index, locals: { order_cycles: order_cycles }
   end
-
-  def show
-    variants_by_order_report = VariantsByOrderReport.new(order_cycle)
-
-    render :show, locals: {
-      orders: variants_by_order_report.orders,
-      products_by_variant_id: variants_by_order_report.products_by_variant_id,
-      variants_by_order_report: variants_by_order_report
-    }
-  end
-
-  private
-
-  def order_cycle
-    OrderCycle.find(params[:id])
-  end
 end
