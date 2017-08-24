@@ -1,6 +1,8 @@
 class ReportsController < ActionController::Base
   SHOWED_ORDER_CYCLES = 10
 
+  layout 'application'
+
   before_filter :authenticate_spree_user!
 
   def index
