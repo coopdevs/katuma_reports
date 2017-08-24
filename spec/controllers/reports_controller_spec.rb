@@ -38,10 +38,27 @@ describe ReportsController do
         it 'shows its SHOWED_ORDER_CYCLES latest order cycles' do
           get :index
           expect(response.body).to include(
+            "<select id=\"order_cycle_id\" name=\"order_cycle_id\">"
+          )
+          expect(response.body).to include(
             "<option value=\"#{monthly_order_cycle.id}\">#{monthly_order_cycle.name}</option>"
           )
           expect(response.body).not_to include(
             "<option value=\"#{weekly_order_cycle.id}\">#{weekly_order_cycle.name}</option>"
+          )
+        end
+
+        it 'redirects to reports/variants_by_order' do
+          get :index
+          expect(response.body).to include(
+            "<form accept-charset=\"UTF-8\" action=\"/reports/variants_by_order\" method=\"get\">"
+          )
+        end
+
+        it 'lets the user render the report' do
+          get :index
+          expect(response.body).to include(
+            "<input name=\"commit\" type=\"submit\" value=\"Submit\" />"
           )
         end
       end

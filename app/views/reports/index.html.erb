@@ -1,5 +1,7 @@
-<h2>reports</h2>
+<h2>Reports</h2>
 
-<form>
-  <%= select_tag 'order_cycles', options_from_collection_for_select(order_cycles, 'id', 'name') %>
-</form>
+<%= form_tag('/reports/variants_by_order', method: 'get') do %>
+  <%= label_tag(:order_cycle_id, 'Order cycle') %>
+  <%= select_tag('order_cycle_id', options_from_collection_for_select(order_cycles, 'id', 'name')) %>
+  <%= submit_tag('Submit') %>
+<% end %>
