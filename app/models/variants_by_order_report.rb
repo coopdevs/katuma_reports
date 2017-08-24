@@ -21,6 +21,7 @@ class VariantsByOrderReport
       .includes(:customer)
       .uniq
       .where(order_cycles: { id: order_cycle.id })
+      .where(state: 'complete')
       .order('customers.name ASC')
   end
 
