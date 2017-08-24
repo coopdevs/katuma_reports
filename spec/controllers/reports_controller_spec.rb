@@ -102,6 +102,7 @@ describe ReportsController do
     before do
       create(:line_item, order: order, variant: variant, quantity: 4)
       create(:line_item, order: order, variant: other_variant, quantity: 2)
+      create(:line_item, order: other_order, variant: other_variant, quantity: 3)
     end
 
     it 'renders the :show template' do
@@ -142,6 +143,7 @@ describe ReportsController do
     <tr>
       <td>#{variant.product.name} - Variant: #{variant.id}</td>
       <td>4</td>
+      <td>0</td>
     </tr>
       HTML
 
@@ -149,6 +151,7 @@ describe ReportsController do
     <tr>
       <td>#{other_variant.product.name} - Variant: #{other_variant.id}</td>
       <td>2</td>
+      <td>3</td>
     </tr>
       HTML
     end

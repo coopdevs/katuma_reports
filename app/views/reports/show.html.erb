@@ -9,11 +9,11 @@
   </thead>
   <tbody>
 
-  <% line_items_by_variant_id.each do |(variant_id, line_items)| %>
+  <% products_by_variant_id.each do |(variant_id, product)| %>
     <tr>
-      <td><%= products_by_variant_id[variant_id.to_s].first.name %> - Variant: <%= variant_id %></td>
-    <% line_items.each do |line_item| %>
-      <td><%= line_item.quantity %></td>
+      <td><%= product.first.name %> - Variant: <%= variant_id %></td>
+    <% orders.each do |order| %>
+      <td><%= line_items_by_variant_id[variant_id].find { |line_item| line_item.order_id == order.id }.try(:quantity) || 0 %></td>
     <% end %>
     </tr>
   <% end %>

@@ -33,7 +33,9 @@ class ReportsController < ActionController::Base
       .where(order_cycles: { id: order_cycle.id })
       .select('spree_products.name, spree_variants.id AS variant_id')
 
-    products_by_variant_id = products.group_by(&:variant_id)
+    products_by_variant_id = products.group_by do |product|
+      product.variant_id.to_i
+    end
 
     line_items = Spree::LineItem
       .joins(order: [:order_cycle, :customer])
