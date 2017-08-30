@@ -4,4 +4,10 @@
 # If you change this key, all old signed cookies will become invalid!
 # Make sure the secret is at least 30 characters and all random,
 # no regular words or you'll be exposed to dictionary attacks.
-KatumaReports::Application.config.secret_token = '364caaba59d8fcbc57b94760750f4ae15bbd4595d7a4d982e5952d92592764c4aebd3a8c61acaae697a4c49b303e3ead6826efcea88a02de92e1838bd273c9de'
+def secret_token
+  return ENV['SECRET_TOKEN'] unless Rails.env.development? || Rails.env.test?
+
+  ('x' * 30)
+end
+
+KatumaReports::Application.config.secret_token = secret_token

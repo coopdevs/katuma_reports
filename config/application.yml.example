@@ -1,0 +1,7 @@
+# This file is used by `figaro` gem
+#
+# Add application configuration variables here
+SECRET_TOKEN:
+DATABASE_NAME:
+DATABASE_USER:
+DATABASE_PASS:

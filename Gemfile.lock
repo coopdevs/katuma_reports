@@ -122,6 +122,9 @@ GEM
       railties (>= 3.0.0)
     ffaker (1.15.0)
     ffi (1.9.18)
+    figaro (0.7.0)
+      bundler (~> 1.0)
+      rails (>= 3, < 5)
     highline (1.6.11)
     hike (1.2.3)
     httparty (0.8.3)
@@ -253,6 +256,7 @@ DEPENDENCIES
   devise-encryptable (= 0.1.2)
   factory_girl_rails (= 3.3.0)
   ffaker (~> 1.15)
+  figaro (= 0.7.0)
   jquery-rails
   pg (= 0.13.2)
   rails (= 3.2.22)
