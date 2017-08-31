@@ -23,6 +23,7 @@ production:
   pool: 5
   username: <%= ENV['DATABASE_USER'] %>
   password: <%= ENV['DATABASE_PASS'] %>
+  host: localhost
 
 staging:
   adapter: postgresql
@@ -31,3 +32,4 @@ staging:
   pool: 5
   username: <%= ENV['DATABASE_USER'] %>
   password: <%= ENV['DATABASE_PASS'] %>
+  host: localhost
