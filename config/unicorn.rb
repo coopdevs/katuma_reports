@@ -1,6 +1,6 @@
-app_dir = File.expand_path("../..", __FILE__)
+app_dir = "/home/openfoodnetwork/apps/katuma_reports"
 shared_dir = "#{app_dir}/shared"
-working_directory app_dir
+working_directory "#{app_dir}/current"
 
 worker_processes 2
 preload_app true
