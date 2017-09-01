@@ -1,11 +1,13 @@
 KatumaReports::Application.routes.draw do
   devise_for :spree_user, class_name: 'Spree::User'
 
-  root to: 'reports#index'
+  root to: 'admin/reports#index'
 
-  resources :reports, only: %i[index]
+  scope '/admin' do
+    resources :reports, only: %i[index]
 
-  scope '/reports' do
-    resources :variants_by_order, only: %i[index]
+    scope '/reports' do
+      resources :variants_by_order, only: %i[index]
+    end
   end
 end
