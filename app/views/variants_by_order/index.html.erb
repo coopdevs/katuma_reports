@@ -1,4 +1,4 @@
-<table>
+<table class="block-table">
   <thead>
     <tr>
       <th>Product</th>
@@ -11,9 +11,9 @@
 
   <% products_by_variant_id.each do |(variant_id, product)| %>
     <tr>
-      <td><%= product.first.name %> - Variant: <%= variant_id %></td>
+      <td class="align-center"><%= product.first.name %> - Variant: <%= variant_id %></td>
     <% orders_including_customer.each do |order| %>
-      <td><%= variants_by_order_report.line_item_for(variant_id, order.id) %></td>
+      <td class="align-center"><%= variants_by_order_report.line_item_for(variant_id, order.id) %></td>
     <% end %>
     </tr>
   <% end %>

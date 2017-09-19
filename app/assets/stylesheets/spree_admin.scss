@@ -1,10 +1,11 @@
-// @import 'globals/functions';
-// @import 'globals/variables_override';
+@import 'globals/functions';
+@import 'globals/variables_override';
 @import 'globals/variables';
-// @import 'globals/mixins';
+@import 'globals/mixins';
 
-// @import 'shared/typography';
-// @import 'shared/tables';
-// @import 'shared/icons';
-// @import 'shared/forms';
+@import 'shared/typography';
+@import 'shared/tables';
+@import 'shared/icons';
 @import 'shared/layout';
+
+@import 'plugins/font-awesome';
