@@ -10,7 +10,7 @@
   <tbody>
 
   <% products_by_variant_id.each do |(variant_id, product)| %>
-    <tr>
+    <tr class="<%= cycle("odd", "even") -%>">
       <td class="align-left"><%= product.first.name %> - Variant: <%= variant_id %></td>
     <% orders_including_customer.each do |order| %>
       <td class="align-right"><%= variants_by_order_report.line_item_for(variant_id, order.id) %></td>
