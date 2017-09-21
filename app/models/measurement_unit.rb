@@ -27,6 +27,10 @@ class MeasurementUnit
     @scale = scale.to_f
   end
 
+  # Returns the appropriate unit name (g, kg, L, mL, etc) for the given type
+  # and scale
+  #
+  # @return [String]
   def to_s
     CONVERSIONS.fetch(type, {}).fetch(scale)
   rescue KeyError
