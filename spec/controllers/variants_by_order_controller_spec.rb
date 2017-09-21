@@ -58,7 +58,7 @@ describe VariantsByOrderController do
 
     it 'shows a column with the units of the product' do
       get :index, order_cycle_id: order_cycle.id.to_s
-      expect(response.body).to include('<td>g</td>')
+      expect(response.body).to include('<td class="align-center">g</td>')
     end
 
     it 'shows a column per customer in the order cycle' do
@@ -92,18 +92,18 @@ describe VariantsByOrderController do
       get :index, order_cycle_id: order_cycle.id.to_s
 
       expect(response.body).to include(<<-HTML)
-    <tr>
-      <td>#{variant.product.name} - Variant: #{variant.id}</td>
-      <td>4</td>
-      <td>0</td>
+      <td class="align-left">#{variant.product.name} - Variant: #{variant.id}</td>
+      <td class="align-center"></td>
+      <td class="align-right">4</td>
+      <td class="align-right">0</td>
     </tr>
       HTML
 
       expect(response.body).to include(<<-HTML)
-    <tr>
-      <td>#{other_variant.product.name} - Variant: #{other_variant.id}</td>
-      <td>2</td>
-      <td>3</td>
+      <td class="align-left">#{other_variant.product.name} - Variant: #{other_variant.id}</td>
+      <td class="align-center">g</td>
+      <td class="align-right">2</td>
+      <td class="align-right">3</td>
     </tr>
       HTML
     end
