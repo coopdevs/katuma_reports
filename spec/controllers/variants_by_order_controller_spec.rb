@@ -39,7 +39,11 @@ describe VariantsByOrderController do
     end
 
     let(:variant) { create(:variant) }
-    let(:other_variant) { create(:variant) }
+
+    let(:other_product) do
+      create(:product, variant_unit: 'weight', variant_unit_scale: 1)
+    end
+    let(:other_variant) { create(:variant, product: other_product) }
 
     before do
       create(:line_item, order: order, variant: variant, quantity: 4)
@@ -50,6 +54,11 @@ describe VariantsByOrderController do
     it 'renders the :index template' do
       expect(get :index, order_cycle_id: order_cycle.id.to_s)
         .to render_template(:index)
+    end
+
+    it 'shows a column with the units of the product' do
+      get :index, order_cycle_id: order_cycle.id.to_s
+      expect(response.body).to include('<td>g</td>')
     end
 
     it 'shows a column per customer in the order cycle' do
