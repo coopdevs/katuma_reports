@@ -1,4 +1,7 @@
 language: ruby
 
+before_script:
+  - psql -c "CREATE USER ofn WITH PASSWORD 'f00d' SUPERUSER;" -U postgres
+
 before_install:
   - gem update bundler
