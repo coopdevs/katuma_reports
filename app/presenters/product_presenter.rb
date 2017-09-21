@@ -2,7 +2,9 @@ require 'delegate'
 
 class ProductPresenter < SimpleDelegator
   def units
-    VariantUnit.new(product.variant_unit, product.variant_unit_scale)
+    MeasurementUnit.new(product.variant_unit, product.variant_unit_scale).to_s
+  rescue MeasurementUnit::Error
+    ''
   end
 
   private

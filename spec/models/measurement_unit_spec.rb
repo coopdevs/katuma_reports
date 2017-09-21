@@ -20,6 +20,15 @@ describe MeasurementUnit do
       let(:scale) { 1_000_000 }
       it { is_expected.to eq('T') }
     end
+
+    context 'and there is no such scale' do
+      let(:scale) { 10 }
+
+      it 'raises' do
+        expect { MeasurementUnit.new(type, scale).to_s }
+          .to raise_error(MeasurementUnit::Error)
+      end
+    end
   end
 
   context 'when the product has a volume type' do
@@ -38,6 +47,46 @@ describe MeasurementUnit do
     context 'and 1000 as scale' do
       let(:scale) { 1000 }
       it { is_expected.to eq('kL') }
+    end
+
+    context 'and there is no such scale' do
+      let(:scale) { 10 }
+
+      it 'raises' do
+        expect { MeasurementUnit.new(type, scale).to_s }
+          .to raise_error(MeasurementUnit::Error)
+      end
+    end
+  end
+
+  context 'without a type' do
+    let(:type) { nil }
+
+    context 'but a scale' do
+      let(:scale) { 1 }
+
+      it 'raises' do
+        expect { MeasurementUnit.new(type, scale).to_s }
+          .to raise_error(MeasurementUnit::Error)
+      end
+    end
+
+    context 'but a 0 scale' do
+      let(:scale) { 0 }
+
+      it 'raises' do
+        expect { MeasurementUnit.new(type, scale).to_s }
+          .to raise_error(MeasurementUnit::Error)
+      end
+    end
+
+    context 'and a scale' do
+      let(:scale) { nil }
+
+      it 'raises' do
+        expect { MeasurementUnit.new(type, scale).to_s }
+          .to raise_error(MeasurementUnit::Error)
+      end
     end
   end
 end
