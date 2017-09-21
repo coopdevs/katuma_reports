@@ -4,6 +4,7 @@ before_install:
   - gem update bundler
 
 before_script:
+  - wget -O db/schema.rb 'https://raw.githubusercontent.com/openfoodfoundation/openfoodnetwork/master/db/schema.rb'
   - psql -c 'create database open_food_network_test;' -U postgres
   - RAILS_ENV=test bundle exec rake db:migrate --trace
   - bundle exec rake db:test:prepare
