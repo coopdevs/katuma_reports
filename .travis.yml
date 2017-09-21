@@ -5,3 +5,4 @@ before_script:
 
 before_install:
   - gem update bundler
+  - bundle exec rake db:create db:test:prepare
