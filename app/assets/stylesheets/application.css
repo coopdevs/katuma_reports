@@ -43,3 +43,43 @@ input[type="submit"], input[type="button"], button, .button {
   font-weight: 600;
   cursor: pointer;
 }
+
+fieldset.no-border-top {
+  border-top: none;
+  padding-top: 0;
+}
+
+fieldset {
+  box-shadow: none;
+  box-sizing: border-box;
+  border-color: #dcebfa;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  margin-left: 0;
+  margin-right: 0;
+  position: relative;
+  margin-bottom: 35px;
+  padding: 10px 0 15px 0;
+  background-color: transparent;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+}
+
+label {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 85%;
+  display: inline;
+  margin-bottom: 5px;
+  color: #6788a2;
+}
+
+/* These are not copied from OFN's stylesheets */
+fieldset {
+  border-bottom: 0px;
+}
+
+label {
+  display: block;
+}
