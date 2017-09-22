@@ -1,7 +1,25 @@
-<h2>Reports</h2>
+<div id="content-header" data-hook="">
+  <div class="container">
 
-<%= form_tag('/reports/variants_by_order', method: 'get') do %>
-  <%= label_tag(:order_cycle_id, 'Order cycle') %>
-  <%= select_tag('order_cycle_id', options_from_collection_for_select(order_cycles, 'id', 'name')) %>
-  <%= submit_tag('Submit') %>
-<% end %>
+    <div class="sixteen columns">
+      <div class="block-table">
+        <div class="table-cell">
+          <h1 class="page-title ">Reports</h1>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div id="content">
+    <%= form_tag('/admin/reports/variants_by_order', method: 'get') do %>
+      <%= label_tag(:order_cycle_id, 'Order cycle') %>
+      <%= select_tag('order_cycle_id', options_from_collection_for_select(order_cycles, 'id', 'name')) %>
+      <%= submit_tag('Submit') %>
+    <% end %>
+    </div>
+  </div>
+</div>
