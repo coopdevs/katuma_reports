@@ -41,4 +41,5 @@ input[type="submit"], input[type="button"], button, .button {
   text-transform: uppercase;
   font-size: 85%;
   font-weight: 600;
+  cursor: pointer;
 }
