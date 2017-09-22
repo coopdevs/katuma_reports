@@ -7,8 +7,6 @@ require File.expand_path('../config/application', __FILE__)
 KatumaReports::Application.load_tasks
 
 # Disable all write rake tasks so that we don't mess up the OFN's database
-Rake::Task['db:migrate'].clear
-Rake::Task['db:create'].clear
 Rake::Task['db:drop'].clear            # Drops the database using DATABASE_URL or the current Rails.env (use db:drop:all to drop all databases)
 Rake::Task['db:fixtures:load'].clear   # Load fixtures into the current environment's database
 Rake::Task['db:migrate'].clear         # Migrate the database (options: VERSION=x, VERBOSE=false)
