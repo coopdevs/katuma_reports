@@ -8,6 +8,7 @@ gem 'pg', '0.13.2'
 gem 'rails', '3.2.22'
 gem 'spree', github: 'openfoodfoundation/spree', branch: 'spree-upgrade-step1c'
 gem 'figaro', '0.7.0'
+gem 'foreigner', '1.6.1'
 
 # Gems used only for assets and not required
 # in production environments by default.
