@@ -11,3 +11,34 @@
  *= require ./spree_admin
  *= require_self
  */
+
+.container {
+  position: relative;
+  width: 960px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+#content {
+  background-color: white;
+  position: relative;
+  z-index: 0;
+  padding: 0;
+  margin-top: 15px;
+}
+
+input[type="submit"], input[type="button"], button, .button {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  display: inline-block;
+  padding: 8px 15px;
+  border: none;
+  background-color: #5fa5e8;
+  color: white;
+  text-transform: uppercase;
+  font-size: 85%;
+  font-weight: 600;
+}

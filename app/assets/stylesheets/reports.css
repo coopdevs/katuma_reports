@@ -7,3 +7,10 @@ td {
 tbody td {
   text-align: center;
 }
+
+.container {
+  position: relative;
+  width: 960px;
+  margin: 0 auto;
+  padding: 0;
+}
