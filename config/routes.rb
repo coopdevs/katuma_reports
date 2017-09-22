@@ -1,7 +1,7 @@
 KatumaReports::Application.routes.draw do
   devise_for :spree_user, class_name: 'Spree::User'
 
-  root to: 'admin/reports#index'
+  root controller: :reports, action: :index
 
   scope '/admin' do
     scope '/reports' do
