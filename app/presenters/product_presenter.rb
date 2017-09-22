@@ -6,7 +6,11 @@ class ProductPresenter < SimpleDelegator
   #
   # @return [String]
   def units
-    MeasurementUnit.new(product.variant_unit, product.variant_unit_scale).to_s
+    MeasurementUnit.new(
+      product.variant_unit,
+      product.variant_unit_scale,
+      product.variant_unit_name
+    ).to_s
   rescue MeasurementUnit::Error
     ''
   end

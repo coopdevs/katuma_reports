@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe MeasurementUnit do
-  subject { MeasurementUnit.new(type, scale).to_s }
+  subject { described_class.new(type, scale).to_s }
 
   context 'when the product has a weight type' do
     let(:type) { 'weight' }
@@ -25,8 +25,8 @@ describe MeasurementUnit do
       let(:scale) { 10 }
 
       it 'raises' do
-        expect { MeasurementUnit.new(type, scale).to_s }
-          .to raise_error(MeasurementUnit::Error)
+        expect { described_class.new(type, scale).to_s }
+          .to raise_error(described_class::Error)
       end
     end
   end
@@ -53,10 +53,20 @@ describe MeasurementUnit do
       let(:scale) { 10 }
 
       it 'raises' do
-        expect { MeasurementUnit.new(type, scale).to_s }
-          .to raise_error(MeasurementUnit::Error)
+        expect { described_class.new(type, scale).to_s }
+          .to raise_error(described_class::Error)
       end
     end
+  end
+
+  context 'when the product has a items type' do
+    subject { described_class.new(type, scale, name).to_s }
+
+    let(:type) { 'items' }
+    let(:scale) { nil }
+    let(:name) { 'pack' }
+
+    it { is_expected.to eq(name) }
   end
 
   context 'without a type' do
@@ -66,8 +76,8 @@ describe MeasurementUnit do
       let(:scale) { 1 }
 
       it 'raises' do
-        expect { MeasurementUnit.new(type, scale).to_s }
-          .to raise_error(MeasurementUnit::Error)
+        expect { described_class.new(type, scale).to_s }
+          .to raise_error(described_class::Error)
       end
     end
 
@@ -75,8 +85,8 @@ describe MeasurementUnit do
       let(:scale) { 0 }
 
       it 'raises' do
-        expect { MeasurementUnit.new(type, scale).to_s }
-          .to raise_error(MeasurementUnit::Error)
+        expect { described_class.new(type, scale).to_s }
+          .to raise_error(described_class::Error)
       end
     end
 
@@ -84,8 +94,8 @@ describe MeasurementUnit do
       let(:scale) { nil }
 
       it 'raises' do
-        expect { MeasurementUnit.new(type, scale).to_s }
-          .to raise_error(MeasurementUnit::Error)
+        expect { described_class.new(type, scale).to_s }
+          .to raise_error(described_class::Error)
       end
     end
   end

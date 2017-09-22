@@ -75,6 +75,7 @@ class VariantsByOrderReport
         'spree_products.name, ' \
         'spree_variants.id AS variant_id, ' \
         'spree_products.variant_unit, ' \
+        'spree_products.variant_unit_name, ' \
         'spree_products.variant_unit_scale'
       )
   end

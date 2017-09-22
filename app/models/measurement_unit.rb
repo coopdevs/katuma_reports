@@ -21,10 +21,13 @@ class MeasurementUnit
 
   # Constructor
   #
-  # @param type [Symbol, Numeric]
-  def initialize(type, scale)
+  # @param type [Symbol]
+  # @param scale [Numeric]
+  # @param name [String] name of the custom unit
+  def initialize(type, scale, name = nil)
     @type = type
     @scale = scale.to_f
+    @name = name
   end
 
   # Returns the appropriate unit name (g, kg, L, mL, etc) for the given type
@@ -32,12 +35,16 @@ class MeasurementUnit
   #
   # @return [String]
   def to_s
-    CONVERSIONS.fetch(type, {}).fetch(scale)
+    if type == 'items'
+      name
+    else
+      CONVERSIONS.fetch(type, {}).fetch(scale)
+    end
   rescue KeyError
     raise Error, "No conversion for type '#{type}' and scale '#{scale}'"
   end
 
   private
 
-  attr_reader :scale, :type
+  attr_reader :scale, :type, :name
 end
