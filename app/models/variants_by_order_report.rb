@@ -26,14 +26,20 @@ class VariantsByOrderReport
   end
 
   # Returns a hash where the key is a variant id present in at least one of the
-  # orders of the order cycle and the value is an array with the product that
-  # variant belongs to. It is meant to be used in the table's left-most column.
+  # orders of the order cycle and the value the product the variant belongs to.
+  # It is meant to be used in the table's left-most column.
   #
   # See #products for details
   #
-  # @return [Hash<Integer, Array<Spree::Product>>]
+  # @return [Hash<Integer, <Spree::Product>>]
   def products_by_variant_id
-    products.group_by { |product| product.variant_id.to_i }
+    products
+      .group_by { |product| product.variant_id.to_i }
+      .reduce({}) do |hash, (variant_id, product_array)|
+        product = product_array.first
+        hash[variant_id] = ProductPresenter.new(product)
+        hash
+    end
   end
 
   # Returns the appropriate line item for the given variant and order ids. It
@@ -65,7 +71,13 @@ class VariantsByOrderReport
       .joins(variants: { line_items: { order: :order_cycle } })
       .for_order_cycle(order_cycle)
       .uniq
-      .select('spree_products.name, spree_variants.id AS variant_id')
+      .select(
+        'spree_products.name, ' \
+        'spree_variants.id AS variant_id, ' \
+        'spree_products.variant_unit, ' \
+        'spree_products.variant_unit_name, ' \
+        'spree_products.variant_unit_scale'
+      )
   end
 
   # Returns a hash where the key is a variant id present in at least one of the
