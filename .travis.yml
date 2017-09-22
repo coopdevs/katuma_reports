@@ -5,4 +5,5 @@ before_install:
 
 before_script:
   - wget -O db/schema.rb 'https://raw.githubusercontent.com/openfoodfoundation/openfoodnetwork/master/db/schema.rb'
+  - psql -c "CREATE USER ofn WITH PASSWORD 'f00d' SUPERUSER;" -U postgres
   - bundle exec rake db:create db:test:prepare
