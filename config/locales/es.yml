@@ -1,0 +1,10 @@
+es:
+  reports:
+    index:
+      reports: 'Informes'
+      order_cycle: 'Ciclo de pedido'
+      submit: 'Buscar'
+  variants_by_order:
+    index:
+      product: 'Producto'
+      units: 'Unidades'

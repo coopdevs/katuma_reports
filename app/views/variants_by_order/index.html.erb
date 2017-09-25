@@ -1,8 +1,8 @@
 <table class="block-table">
   <thead>
     <tr>
-      <th>Product</th>
-      <th>Units</th>
+      <th><%= t('.product') %></th>
+      <th><%= t('.units') %></th>
     <% orders_including_customer.each do |order| %>
       <th><%= order.customer.name %> - <%= order.number %></th>
     <% end %>

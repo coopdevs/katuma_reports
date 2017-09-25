@@ -58,7 +58,7 @@ describe ReportsController do
         it 'lets the user render the report' do
           get :index
           expect(response.body).to include(
-            "<input name=\"commit\" type=\"submit\" value=\"Submit\" />"
+            "<input name=\"commit\" type=\"submit\" value=\"#{I18n.t('reports.index.submit')}\" />"
           )
         end
       end
