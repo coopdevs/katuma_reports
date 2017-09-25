@@ -4,7 +4,7 @@
     <div class="sixteen columns">
       <div class="block-table">
         <div class="table-cell">
-          <h1 class="page-title ">Reports</h1>
+          <h1 class="page-title "><%= t('.reports') %></h1>
         </div>
       </div>
     </div>
@@ -17,9 +17,9 @@
     <div id="content">
     <%= form_tag('/admin/reports/variants_by_order', method: 'get') do %>
       <%= field_set_tag(nil, class: 'no-border-top') do %>
-        <%= label_tag(:order_cycle_id, 'Order cycle') %>
+        <%= label_tag(:order_cycle_id, t('.order_cycle')) %>
         <%= select_tag('order_cycle_id', options_from_collection_for_select(order_cycles, 'id', 'name')) %>
-        <%= submit_tag('Submit') %>
+        <%= submit_tag(t('.submit')) %>
       <% end %>
     <% end %>
     </div>
