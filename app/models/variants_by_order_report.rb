@@ -70,6 +70,7 @@ class VariantsByOrderReport
     Spree::Product
       .joins(variants: { line_items: { order: :order_cycle } })
       .for_order_cycle(order_cycle)
+      .where("spree_orders.state = 'complete'")
       .uniq
       .select(
         'spree_products.name, ' \
@@ -100,6 +101,7 @@ class VariantsByOrderReport
     Spree::LineItem
       .joins(order: [:order_cycle, :customer])
       .for_order_cycle(order_cycle)
+      .where("spree_orders.state = 'complete'")
       .group(
         'customers.id, ' \
         'spree_line_items.variant_id, ' \

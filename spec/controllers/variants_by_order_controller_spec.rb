@@ -107,5 +107,21 @@ describe VariantsByOrderController do
     </tr>
       HTML
     end
+
+    context 'when a variant was only purchased by an incomplete order of the order cycle' do
+      let(:cart_variant) { create(:variant) }
+      let(:cart_order) do
+        create(:order, customer: customer, order_cycle: order_cycle, state: 'cart')
+      end
+
+      before do
+        create(:line_item, order: cart_order, variant: cart_variant, quantity: 1)
+      end
+
+      it 'does not show a row for it' do
+        get :index, order_cycle_id: order_cycle.id.to_s
+        expect(response.body).not_to include("#{cart_variant.product.name} - Variant: #{cart_variant.id}")
+      end
+    end
   end
 end
