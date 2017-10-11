@@ -30,10 +30,21 @@ describe VariantsByOrderReport do
     context 'when the order is completed' do
       let(:state) { 'complete' }
 
-      it { is_expected.to include(order) }
+      context 'and the order does not belong to the order_cycle' do
+        let(:other_order_cycle) { create(:order_cycle, coordinator: enterprise) }
+        let(:order) do
+          create(:order, customer: customer, order_cycle: other_order_cycle, state: state)
+        end
 
-      it 'contains the customer name' do
-        expect(orders_including_customer.first.customer.name).to eq(customer.name)
+        it { is_expected.not_to include(order) }
+      end
+
+      context 'and the order belongs to the order_cycle' do
+        it { is_expected.to include(order) }
+
+        it 'contains the customer name' do
+          expect(orders_including_customer.first.customer.name).to eq(customer.name)
+        end
       end
     end
   end
