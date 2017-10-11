@@ -62,6 +62,7 @@ class VariantsByOrderReport
 
     line_item = line_items_for_variant
       .find { |line_item| line_item.order_id == order_id }
+
     line_item || NullLineItem.new
   end
 
