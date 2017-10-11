@@ -5,9 +5,9 @@ KatumaReports::Application.routes.draw do
 
   scope '/admin' do
     scope '/reports' do
-      get '/:report', controller: :reports, action: :index
-
       resources :variants_by_order, only: %i[index]
+
+      get '/:report', controller: :reports, action: :index
     end
   end
 end
