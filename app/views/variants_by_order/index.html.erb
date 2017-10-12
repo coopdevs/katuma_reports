@@ -15,7 +15,7 @@
       <td class="align-left"><%= product.name %> - Variant: <%= variant_id %></td>
       <td class="align-center"><%= product.units %></td>
     <% orders_including_customer.each do |order| %>
-      <td class="align-right"><%= variants_by_order_report.line_item_for(variant_id, order.id).quantity %></td>
+      <td class="align-right"><%= variants_by_order_report.line_item_for(variant_id, order.id) %></td>
     <% end %>
     </tr>
   <% end %>
