@@ -3,9 +3,11 @@ require 'rails_helper'
 describe VariantsByOrderController do
   render_views
 
-  # TODO: Missing authorization. Only a user that belongs to the enterprise
-  # can see its reports.
   describe '#index' do
+    # TODO: Missing authorization. Only a user that belongs to the enterprise
+    # can see its reports.
+    let(:user) { create(:user) }
+
     let(:enterprise) { create(:enterprise) }
     let(:order_cycle) { create(:order_cycle, coordinator: enterprise) }
 
@@ -104,6 +106,22 @@ describe VariantsByOrderController do
       <td class="align-right">3</td>
     </tr>
       HTML
+    end
+
+    context 'when a variant was only purchased by an incomplete order of the order cycle' do
+      let(:cart_variant) { create(:variant) }
+      let(:cart_order) do
+        create(:order, customer: customer, order_cycle: order_cycle, state: 'cart')
+      end
+
+      before do
+        create(:line_item, order: cart_order, variant: cart_variant, quantity: 1)
+      end
+
+      it 'does not show a row for it' do
+        get :index, order_cycle_id: order_cycle.id.to_s
+        expect(response.body).not_to include("#{cart_variant.product.name} - Variant: #{cart_variant.id}")
+      end
     end
   end
 end
