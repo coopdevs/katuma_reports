@@ -48,10 +48,10 @@ describe ReportsController do
           )
         end
 
-        it 'redirects to reports/variants_by_order' do
+        it 'redirects to /admin/reports/order_cycle_management/variants_by_order' do
           get :index
           expect(response.body).to include(
-            "<form accept-charset=\"UTF-8\" action=\"/admin/reports/variants_by_order\" method=\"get\">"
+            "<form accept-charset=\"UTF-8\" action=\"/admin/reports/order_cycle_management/variants_by_order\" method=\"get\">"
           )
         end
 
