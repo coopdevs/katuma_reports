@@ -5,7 +5,7 @@ KatumaReports::Application.routes.draw do
 
   scope '/admin' do
     scope '/reports' do
-      resources :variants_by_order, only: %i[index]
+      resources :variants_by_order, only: %i[index], path: 'order_cycle_management'
 
       # This will match any URL like /admin/reports/<report_name> not matched
       # by any of the previous declarations. Remember that Rails evaluates the
