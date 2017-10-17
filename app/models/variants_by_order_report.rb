@@ -1,6 +1,15 @@
 # Fetches and processes the data to show a table report for the variants and
 # orders in an order cycle
 class VariantsByOrderReport
+
+  # Represents a Line Item that was not found in an order cycle. Used in this
+  # report class.
+  class NullLineItem
+    def quantity
+      0
+    end
+  end
+
   # Constructor
   #
   # @param order_cycle [OrderCycle]
@@ -21,7 +30,6 @@ class VariantsByOrderReport
       .includes(:customer)
       .for_order_cycle(order_cycle)
       .completed
-      .uniq
       .order('customers.name ASC')
   end
 
@@ -47,11 +55,15 @@ class VariantsByOrderReport
   #
   # @param variant_id [Integer]
   # @param order_id [Integer]
+  # @return [#quantity] an object that responds to #quantity
   def line_item_for(variant_id, order_id)
-    line_item = line_items_by_variant_id[variant_id]
+    line_items_for_variant = line_items_by_variant_id[variant_id]
+    return NullLineItem.new unless line_items_for_variant
+
+    line_item = line_items_for_variant
       .find { |line_item| line_item.order_id == order_id }
 
-    line_item.try(:quantity) || 0
+    line_item || NullLineItem.new
   end
 
   private
