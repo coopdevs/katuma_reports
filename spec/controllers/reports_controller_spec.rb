@@ -23,28 +23,55 @@ describe ReportsController do
       end
 
       context 'when the user belongs to a particular enterprise' do
-        let!(:weekly_order_cycle) do
-          create(:order_cycle, coordinator: enterprise, created_at: 2.days.ago)
-        end
-        let!(:monthly_order_cycle) do
-          create(:order_cycle, coordinator: enterprise)
+        let!(:closed_order_cycle) do
+          create(
+            :order_cycle,
+            name: 'closed_order_cycle',
+            coordinator: enterprise,
+            orders_open_at: 2.days.ago,
+            orders_close_at: 1.day.ago
+          )
         end
 
-        before do
-          create(:enterprise_role, user: user, enterprise: enterprise)
-          stub_const('ReportsController::SHOWED_ORDER_CYCLES', 1)
+        let!(:active_order_cycle) do
+          create(
+            :order_cycle,
+            name: 'active_order_cycle',
+            coordinator: enterprise,
+            orders_open_at: 2.days.ago,
+            orders_close_at: 1.day.from_now
+          )
         end
+
+        before { create(:enterprise_role, user: user, enterprise: enterprise) }
 
         it 'shows its SHOWED_ORDER_CYCLES latest order cycles' do
+          stub_const('ReportsController::SHOWED_ORDER_CYCLES', 1)
+
           get :index
+
           expect(response.body).to include(
             "<select id=\"order_cycle_id\" name=\"order_cycle_id\">"
           )
           expect(response.body).to include(
-            "<option value=\"#{monthly_order_cycle.id}\">#{monthly_order_cycle.name}</option>"
+            "<option value=\"#{active_order_cycle.id}\">#{active_order_cycle.name}</option>"
           )
           expect(response.body).not_to include(
-            "<option value=\"#{weekly_order_cycle.id}\">#{weekly_order_cycle.name}</option>"
+            "<option value=\"#{closed_order_cycle.id}\">#{closed_order_cycle.name}</option>"
+          )
+        end
+
+        it 'shows closed order cycles' do
+          get :index
+          expect(response.body).to include(
+            "<option value=\"#{closed_order_cycle.id}\">#{closed_order_cycle.name}</option>"
+          )
+        end
+
+        it 'shows active order cycles' do
+          get :index
+          expect(response.body).to include(
+            "<option value=\"#{active_order_cycle.id}\">#{active_order_cycle.name}</option>"
           )
         end
 
