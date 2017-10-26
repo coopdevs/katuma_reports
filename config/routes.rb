@@ -3,6 +3,8 @@ KatumaReports::Application.routes.draw do
 
   root controller: :reports, action: :index
 
+  match '/delayed_job' => DelayedJobWeb, anchor: false, via: [:get, :post]
+
   scope '/admin' do
     scope '/reports' do
       get '/order_cycle_management', controller: :reports, action: :index
