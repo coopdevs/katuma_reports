@@ -7,7 +7,7 @@ gem 'devise-encryptable', '0.1.2'
 gem 'pg', '0.13.2'
 gem 'rails', '3.2.22'
 gem 'rails-i18n', '~>3.0.0'
-gem 'spree', github: 'openfoodfoundation/spree', branch: 'spree-upgrade-step1c'
+gem 'spree', github: 'openfoodfoundation/spree', branch: 'step-6a', ref: '5a76d45'
 gem 'figaro', '0.7.0'
 
 gem 'delayed_job_active_record', '4.0.2'
