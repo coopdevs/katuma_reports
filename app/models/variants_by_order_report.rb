@@ -101,7 +101,7 @@ class VariantsByOrderReport
   #
   # @return [Hash<Integer, Array<Spree:LineItem>>]
   def line_items_by_variant_id
-    line_items.group_by(&:variant_id)
+    @line_items_by_variant_id ||= line_items.group_by(&:variant_id)
   end
 
   # Gets the line items that belong to an order of the specified order cycle
